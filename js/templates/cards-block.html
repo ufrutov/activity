@@ -1,0 +1,34 @@
+<section class="cards-block-bg">
+  <div class="cards-block">
+      <div id="close-cards"></div>
+      <div id="modal"></div>
+      <form method="post" name="new-card" id="card-form">
+          <div class="input-group input-group">
+              <span class="input-group-addon" id="cards-count"><img src="img/loading.gif" /></span>
+              <input type="text" id="new-word" name="word" class="form-control" placeholder="Новая карточка">
+          </div>
+
+          <div id="autocomplete"></div>
+          
+          <div class="label-group">
+            <label class="checkbox-inline">
+              <input type="checkbox" name="draw" checked="checked" /> Рисовать
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" name="say" checked="checked" /> Рассказать
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" name="show" checked="checked" /> Показать
+            </label>
+          </div>
+          
+          <div class="ta-center">
+            <input type="button" value="Добавить" id="add-card" class="btn btn-success btn-sm" />
+            <input type="reset" value="Отменить" class="btn btn-default btn-sm" />
+          </div>
+      </form>
+      <div id="card-listing">
+        <img class="list-loading" src="img/load.gif" />
+      </div>
+  </div>
+</section>
