@@ -671,6 +671,11 @@ article.card-body .word {
 #show-slide .noUi-base { background-color: #84AFF0; }
 #draw-slide .noUi-base { background-color: #65DF6A; }
 
+.audio-file {
+	display: none;
+	visibility: hidden;
+}
+
 /*
 *************************************************
 ********** Styles for mobile devices ************

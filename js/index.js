@@ -18,6 +18,7 @@ var App = Backbone.View.extend({
 
     me.settings = {
       count   : true,
+      sound   : true,
       draw    : 120,
       show    : 60,
       say     : 60,

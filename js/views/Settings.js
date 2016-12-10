@@ -7,7 +7,8 @@ var Settings = Backbone.View.extend({
 		'click #close-settings': 'destroy',
 		'change #show-count'   : 'change_show',
 		'blur .command-name'   : 'change_name',
-		'click #add-command'   : 'add_command'
+		'click #add-command'   : 'add_command',
+		'change #play-sound'   : 'change_sound'
 	},
 
 	initialize: function(){
@@ -17,6 +18,12 @@ var Settings = Backbone.View.extend({
 
 	change_show: function() {
 		App.settings.count = $('#show-count').prop('checked');
+		App.set_cookie();
+	},
+
+	change_sound: function() {
+		App.settings.sound = $('#play-sound').prop('checked');
+		App.set_cookie();
 	},
 
 	change_name: function(e) {
@@ -66,12 +73,14 @@ var Settings = Backbone.View.extend({
         	App.settings.say = cookie.say;
         	App.settings.show = cookie.show;
         	App.settings.draw = cookie.draw;
+        	App.settings.sound = cookie.sound;
 		}
 
 		var html = $.get("js/templates/" + me.template + ".html", function(template){
 	      	$(me.el).html(template);
 
 	      	$('#show-count').prop('checked', App.settings.count);
+	      	$('#play-sound').prop('checked', App.settings.sound);
 	    	
 	    	$('#say-slide').noUiSlider({
 				start: App.settings.say,

@@ -32,6 +32,7 @@ var Card = Backbone.View.extend({
 	},
 
 	start: function() {
+		console.log('[Card] start');
 		var me = this;
 		$('#close-play').hide();
 		// Encode word
@@ -74,6 +75,12 @@ var Card = Backbone.View.extend({
 			limit = Math.floor((time*80)/100);
 		me.interval_status = i;
 		if(i > time) {
+			try {
+				if( App.settings.sound )
+					$('#beep')[0].play();
+			} catch(e) {
+				console.error('[E] Error on play audio: ', e);
+			}
   			clearInterval(me.progress);
   			$('#close-play').show();
   			$.get("js/templates/" + me.next + ".html", function(template){
