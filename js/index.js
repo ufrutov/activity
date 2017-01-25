@@ -12,6 +12,25 @@ var App = Backbone.View.extend({
     'click #settings'   : 'open_settings'
   },
 
+  templates: [
+    'card-buttons',
+    'card-params',
+    'card',
+    'cards-block',
+    'cards-list-content',
+    'cards-list',
+    'command-name',
+    'count-item',
+    'count',
+    'edit-modal',
+    'get-next',
+    'new-card',
+    'play-block',
+    'play-start',
+    'progress',
+    'settings'
+  ],
+
   initialize: function(){
     var me = this;
     _.bindAll(this, 'render'); // fixes loss of context for 'this' within methods
@@ -26,7 +45,12 @@ var App = Backbone.View.extend({
     }
 
     if( $.cookie('Activity') != undefined ) {
-      var cookie = JSON.parse($.cookie('Activity'));
+      var cookie = [];
+      try {
+        cookie = JSON.parse($.cookie('Activity'));
+      } catch (e) {
+        console.warn('[E] Initialize cookie error: ', e);
+      }
       $.each(cookie, function(key, val) {
         switch (key) {
           case 'commands':
@@ -67,21 +91,37 @@ var App = Backbone.View.extend({
         case 'minus':
           if( c-1 > -1 ) {
            $(e.target).parent().find('font').html(c-=1);
-           App.settings.commands[i].set('count', c, {'silent': true});
+           this.settings.commands[i].set('count', c, {'silent': true});
           }
           break;
         case 'plus':
+          console.log('[this.settings.commands]', this.settings.commands[i]);
           $(e.target).parent().find('font').html(c+=1);
-          App.settings.commands[i].set('count', c, {'silent': true});
+          this.settings.commands[i].set('count', c, {'silent': true});
           break;
       }
-      App.set_cookie();
+      this.set_cookie();
     }
   },
 
   set_cookie: function() {
-    var cookie = JSON.stringify(App.settings);
-    $.cookie('Activity', cookie, {raw: true, json: true});
+    var cookie = {};
+
+    cookie.commands = [];
+
+    for(var key in this.settings) {
+      switch (key) {
+        case 'commands':
+          $.each(this.settings[key], function(i, r) {
+            cookie[key].push(r.attributes);
+          });
+          break;
+        default:
+          cookie[key] = this.settings[key];
+      }
+    }
+    console.log('[set_cookie]', cookie);
+    $.cookie('Activity', JSON.stringify(cookie), {raw: true, json: true});
   },
 
   candy: function() {
@@ -106,7 +146,7 @@ var App = Backbone.View.extend({
   update_commands: function(data) {
     var me = this;
     $('.count-items').html('');
-    $.get("js/templates/count-item.html", function(item){
+    me.getTemplate('count-item', function(item){
       var count_item = _.template(item);
       $.each(me.settings.commands, function(i, v) {
         $('.count-items').append(count_item({
@@ -121,38 +161,101 @@ var App = Backbone.View.extend({
     else
       $('.count-items').removeClass('command3');
 
-    App.set_cookie();
+    this.set_cookie();
   },
 
-  declOfNum: function(number, titles) {  
-    var cases = [2, 0, 1, 1, 1, 2];  
-    return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];  
+  declOfNum: function(number, titles) {
+    var cases = [2, 0, 1, 1, 1, 2];
+    return titles[ (number%100>4 && number%100<20)? 2 : cases[(number%10<5)?number%10:5] ];
   },
 
   reset_count: function() {
+    var me = this;
     if (window.confirm("Обнулить счет?")) {
-      $.each(App.settings.commands, function(i, v) {
+      $.each(me.settings.commands, function(i, v) {
+        console.log('[count]', v);
         v.set('count', 0);
       });
     }
   },
 
+  loadTemplates: function() {
+    $.each(this.templates, function(i, t) {
+      var link = document.createElement('link');
+      link.setAttribute('href','js/templates/'+t+'.html');
+      link.setAttribute('id','tmp-'+t);
+      link.setAttribute('rel','import');
+      document.head.appendChild(link);
+    });
+  },
+
+  getTemplate: function(id, callback) {
+    var me = this;
+    id = 'tmp-'+id;
+    if( document.getElementById(id).import != null )
+      callback(me.convertTemplate(document.getElementById(id).import.body.innerHTML));
+    else {
+      document.getElementById(id).onload = function() {
+        callback(me.convertTemplate(document.getElementById(id).import.body.innerHTML));
+      };
+    }
+  },
+
+  convertTemplate: function(str) {
+    str = str.replace(/&amp;/g, "&");
+    str = str.replace(/&gt;/g, ">");
+    str = str.replace(/&lt;/g, "<");
+    str = str.replace(/&quot;/g, "\"");
+    str = str.replace(/&#039;/g, "'");
+    return str;
+  },
+
+  isFunction: function(functionToCheck) {
+		var getType = {};
+		return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+	},
+
   render: function(){
     var me = this;
+
+    me.loadTemplates();
     // Add count block to the main View
-    $.get("js/templates/count.html", function(template){
+    me.getTemplate('count', function(template) {
+      console.log('1 >>> [render]', $.cookie('Activity'));
       if( $.cookie('Activity') != undefined ) {
-        var cookie = JSON.parse($.cookie('Activity'));
-        $.each(cookie.commands, function(i, v) {
-          me.settings.commands.push(new Count({name: v.name, count: v.count, id: i}));
-        });
+        var cookie = {};
+        try {
+          cookie = JSON.parse($.cookie('Activity'));
+          console.log('2 >>> [try]', cookie);
+        } catch (e) {
+          console.error('[E] Render function cookie error', e);
+
+          me.settings.commands.push(new Count({name: 'Котята-утята', count: 0, id: 0}));
+          me.settings.commands.push(new Count({name: 'Мальчики-зайчики', count: 0, id: 1}));
+          console.log(me.settings);
+          me.set_cookie();
+        }
+        console.log('2.1 >>> [commands]', cookie.hasOwnProperty('commands'), cookie.commands);
+        if( cookie.hasOwnProperty('commands') && cookie.commands.lenght > 0 ) {
+          console.log('3 >>> [commands]', cookie.commands);
+          $.each(cookie.commands, function(i, v) {
+            me.settings.commands.push(new Count({name: v.name, count: v.count, id: i}));
+          });
+          me.set_cookie();
+        } else {
+          console.log('3 >>> [empty commands]');
+          me.settings.commands.push(new Count({name: 'Котята-утята', count: 0, id: 0}));
+          me.settings.commands.push(new Count({name: 'Мальчики-зайчики', count: 0, id: 1}));
+
+          me.set_cookie();
+        }
       } else {
         me.settings.commands.push(new Count({name: 'Котята-утята', count: 0, id: 0}));
         me.settings.commands.push(new Count({name: 'Мальчики-зайчики', count: 0, id: 1}));
-        
-        App.set_cookie();
-      }
 
+        me.set_cookie();
+      }
+      console.log('[render FINISH]', me.settings, cookie);
       $(me.count).html(template);
       me.update_commands();
     });

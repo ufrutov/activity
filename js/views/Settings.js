@@ -43,7 +43,7 @@ var Settings = Backbone.View.extend({
 			var command = new Count({name: 'Новая команда', count: 0, id: 2});
 			App.settings.commands.push(command);
 
-			$.get("js/templates/" + this.command + ".html", function(template) {
+			App.getTemplate(this.command, function(template) {
 	    		var input = _.template(template);
     			$('#commands').append(input({
     				i : 2,
@@ -67,7 +67,7 @@ var Settings = Backbone.View.extend({
 	render: function() {
 		var me = this,
 			url = window.location.href;
-		
+
 		if( $.cookie('Activity') != undefined ) {
         	var cookie = JSON.parse($.cookie('Activity'));
         	App.settings.say = cookie.say;
@@ -75,13 +75,12 @@ var Settings = Backbone.View.extend({
         	App.settings.draw = cookie.draw;
         	App.settings.sound = cookie.sound;
 		}
-
-		var html = $.get("js/templates/" + me.template + ".html", function(template){
+		App.getTemplate(me.template, function(template){
 	      	$(me.el).html(template);
 
 	      	$('#show-count').prop('checked', App.settings.count);
 	      	$('#play-sound').prop('checked', App.settings.sound);
-	    	
+
 	    	$('#say-slide').noUiSlider({
 				start: App.settings.say,
 				step: 1,
@@ -111,7 +110,7 @@ var Settings = Backbone.View.extend({
 			$('#draw-time > i').html(App.settings.draw);
 			$('#show-time > i').html(App.settings.show);
 
-	    	$.get("js/templates/" + me.command + ".html", function(template) {
+				App.getTemplate(me.command, function(template) {
 	    		var input = _.template(template);
 	    		$.each(App.settings.commands, function(i, v) {
 	    			$('#commands').append(input({

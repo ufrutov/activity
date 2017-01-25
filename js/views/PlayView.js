@@ -23,30 +23,37 @@ var PlayView = Backbone.View.extend({
 	},
 
 	get_card: function(e) {
+		if( !App.isFunction(this.card.get_card) )
+			return;
 		if($(e.currentTarget).data('next'))
 			this.card.get_card(true);
-		else 
+		else
 			this.card.get_card(false);
 	},
 
 	add_point: function(e) {
-		this.card.add_point(e);
+		if( App.isFunction(this.card.add_point) )
+			this.card.add_point(e);
 	},
 
 	start: function() {
-		this.card.start();
+		if( App.isFunction(this.card.start) )
+			this.card.start();
 	},
 
 	stop: function() {
-		this.card.stop();
+		if( App.isFunction(this.card.stop) )
+			this.card.stop();
 	},
 
 	show_count: function() {
-		this.card.show_count();
+		if( App.isFunction(this.card.show_count) )
+			this.card.show_count();
 	},
 
 	decode_word: function(e) {
-		this.card.decode_word($(e.currentTarget).hasClass('encoded'));
+		if( App.isFunction(this.card.decode_word) )
+			this.card.decode_word($(e.currentTarget).hasClass('encoded'));
 	},
 
 	destroy: function() {
@@ -67,7 +74,7 @@ var PlayView = Backbone.View.extend({
 		var me = this,
 			url = window.location.href;
 
-		$.get("js/templates/" + me.template + ".html", function(template){
+		App.getTemplate(me.template, function(template){
 	      	$(me.el).html(template);
 	      	me.viewport = $('#play-block');
 	    });

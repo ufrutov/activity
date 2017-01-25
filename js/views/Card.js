@@ -9,7 +9,7 @@ var Card = Backbone.View.extend({
 	interval_status: 1,
 	current: {},
 	events: {
-		
+
 	},
 
 	initialize: function(){
@@ -32,7 +32,6 @@ var Card = Backbone.View.extend({
 	},
 
 	start: function() {
-		console.log('[Card] start');
 		var me = this;
 		$('#close-play').hide();
 		// Encode word
@@ -40,7 +39,7 @@ var Card = Backbone.View.extend({
 		$('#word').html( me.encode_word($('#word').html()) );
 		$('#word').addClass('encoded');
 
-		$.get("js/templates/progress.html", function(template){
+		App.getTemplate('progress', function(template){
 	      	$('.card-body > nav').html(template);
 	      	var i = 1;
 	      	me.progress = setInterval(function() {
@@ -83,7 +82,8 @@ var Card = Backbone.View.extend({
 			}
   			clearInterval(me.progress);
   			$('#close-play').show();
-  			$.get("js/templates/" + me.next + ".html", function(template){
+
+				App.getTemplate(me.next, function(template){
   				var btn = _.template(template);
   				$('.card-body > nav').html('');
   				$.each(App.settings.commands, function(i, v) {
@@ -109,8 +109,8 @@ var Card = Backbone.View.extend({
 		clearInterval(me.progress);
 
 		$('#close-play').show();
-		
-		$.get("js/templates/" + me.next + ".html", function(template){
+
+		App.getTemplate(me.next, function(template){
 			var btn = _.template(template);
 			$('.card-body > nav').html('');
 			$.each(App.settings.commands, function(i, v) {
@@ -141,12 +141,12 @@ var Card = Backbone.View.extend({
 				me.word = data.word;
 
 				if(btn) {
-					$.get("js/templates/card-buttons.html", function(template){
+					App.getTemplate('card-buttons', function(template){
 						$('.card-body > nav').html(template);
 					});
 				}
 
-				$.get("js/templates/" + me.params + ".html", function(template){
+				App.getTemplate(me.params, function(template){
 			      	var parameters = _.template(template),
 			      		common = Math.floor(Math.random() * 3) + 1, // 1 to 3
 			      		params = [0, 0, 0];
@@ -179,7 +179,7 @@ var Card = Backbone.View.extend({
 	render: function(e) {
 		var me = this;
 		me.el = $('#play-block');
-		$.get("js/templates/" + me.template + ".html", function(template){
+		App.getTemplate(me.template, function(template){
 	      	$(me.el).html(template);
 	      	me.get_card(false);
 	    });

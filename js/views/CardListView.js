@@ -42,9 +42,9 @@ var CardListView = Backbone.View.extend({
 				type: 'post',
 				success: function(output) {
 					var data = $.parseJSON(output)[0];
-					$.get("js/templates/edit-modal.html", function(template){
+					App.getTemplate('edit-modal', function(template){
 						var temp = _.template(template);
-						
+
 						$('#modal').html(temp({
 							id: data['id'],
 							word: data['word'],
@@ -63,7 +63,7 @@ var CardListView = Backbone.View.extend({
 	save_edit: function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
-		
+
 		var me = this,
 			url = window.location.href,
 			id = $(e.currentTarget).data('id'),
@@ -87,7 +87,7 @@ var CardListView = Backbone.View.extend({
 				success: function(output) {
 					var data = $.parseJSON(output);
 					$('#modal').html('');
-					$.get("js/templates/" + me.list_template_content + ".html", function(list){
+					App.getTemplate(me.list_template_content, function(list){
 						var template = _.template(list),
 							li = $('.list[data-id='+data['id']+']');
 						li.html(template({
@@ -115,7 +115,7 @@ var CardListView = Backbone.View.extend({
 		var me = this,
 			url = window.location.href,
 			id = $(e.currentTarget).data('id');
-		if (window.confirm("Удалить карточку?")) { 
+		if (window.confirm("Удалить карточку?")) {
 			$.ajax({
 				url: url + 'db/index.php',
 				data: {
@@ -138,7 +138,7 @@ var CardListView = Backbone.View.extend({
 	addCard: function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
-		
+
 		var me = this,
 			url = window.location.href,
 			params = $('#card-form').serializeArray();
@@ -156,13 +156,13 @@ var CardListView = Backbone.View.extend({
 				},
 				type: 'post',
 				success: function(output) {
-					
+
 					var data = $.parseJSON(output);
 
 					$('#cards-count').html(data['count']);
 					$('#card-form')[0].reset();
 
-					$.get("js/templates/" + me.list_template + ".html", function(list){
+					App.getTemplate(me.list_template, function(list){
 						var template = _.template(list);
 						$('#card-listing > ul').prepend(template({
 							id: data['id'],
@@ -192,9 +192,9 @@ var CardListView = Backbone.View.extend({
 				type: 'post',
 				success: function(output) {
 					var data = $.parseJSON(output);
-					
+
 					me.autocomplete = [];
-					
+
 					$.each(data, function(i, v) {
 						me.autocomplete.push(v.word);
 					});
@@ -207,15 +207,15 @@ var CardListView = Backbone.View.extend({
 	enter_word: function(e) {
 		e.preventDefault();
 		e.stopImmediatePropagation();
-		
+
 		var me = this,
 			input = $(e.currentTarget).val(),
 			complete = [];
-		
+
 		$('#autocomplete').html('');
 
 		if ( input.length > 2 ) {
-			
+
 			$.each(me.autocomplete, function(i, v) {
 				if( v.toLowerCase().match(input.toLowerCase()) )
 					complete.push(v);
@@ -236,11 +236,11 @@ var CardListView = Backbone.View.extend({
 	render: function() {
 		var me = this,
 			url = window.location.href;
-			
-		var html = $.get("js/templates/" + me.template + ".html", function(template){
-	      	$(me.el).html(template);
 
-	      	$.ajax({
+		App.getTemplate(me.template, function(template){
+    	$(me.el).html(template);
+
+    	$.ajax({
 				url: url + 'db/index.php',
 				data: {action: 'get_cards'},
 				type: 'post',
@@ -248,7 +248,8 @@ var CardListView = Backbone.View.extend({
 					var data = $.parseJSON(output);
 					$('#cards-count').html(data.length);
 					$('#card-listing').html('<ul></ul>');
-					$.get("js/templates/" + me.list_template + ".html", function(list){
+
+					App.getTemplate(me.list_template, function(list){
 
 						var template = _.template(list);
 						$.each(data.reverse(), function(i) {
@@ -263,7 +264,7 @@ var CardListView = Backbone.View.extend({
 					});
 				}
 			});
-	    });
+    });
 	}
 
 });
