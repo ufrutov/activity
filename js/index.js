@@ -160,3 +160,10 @@ var App = Backbone.View.extend({
 });
 
 var App = new App();
+
+/*
+  # Share working copy for few local users
+  cd .git/
+  sudo chmod -R g+ws *
+  git config core.sharedRepository true
+*/
