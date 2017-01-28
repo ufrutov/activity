@@ -31,14 +31,28 @@ module.exports = function(grunt) {
           'dist/activity.js': ['dist/activity.js']
         }
       }
+    },
+    copy: {
+      main: {
+        files: [
+          // TODO: Set up files permissions for all resources
+          { cwd: 'js/templates', dest: 'dist/js/templates', src: '**/*', expand: true }, 
+          // { cwd: 'js/lib', dest: 'dist/js/lib', src: '**/*', expand: true },
+          // { cwd: 'js/sound', dest: 'dist/js/sound', src: '**/*', expand: true },
+          // { cwd: 'img', dest: 'dist/img', src: '**/*', expand: true },
+          // { cwd: 'css', dest: 'dist/css', src: '**/*', expand: true },
+          // { cwd: 'db', dest: 'dist/db', src: '**/*', expand: true }
+        ]
+      }
     }
   });
 
   // These plugins provide necessary tasks.
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   // Default task.
-  grunt.registerTask('default', ['concat', 'uglify:activity']);
+  grunt.registerTask('default', ['concat', 'uglify:activity', 'copy']);
 
 };

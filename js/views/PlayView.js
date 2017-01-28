@@ -8,7 +8,7 @@ var PlayView = Backbone.View.extend({
 		'click #close-play'            : 'destroy',
 		'click #start'                 : 'startPlay',
 		'click img.cards'              : 'startPlay',
-		'click #get-other'             : 'get_card',
+		'click #get-other'             : 'get_card', // get_other
 		'click #play'                  : 'start',
 		'click #point'                 : 'add_point',
 		'click #word'                  : 'decode_word',
@@ -27,6 +27,15 @@ var PlayView = Backbone.View.extend({
 			this.card.get_card(true);
 		else 
 			this.card.get_card(false);
+	},
+
+	get_other: function(e) {
+		try {
+			if( App.settings.sound )
+				$('#kaspersky')[0].play();
+		} catch(e) { console.error('[E] Error on play audio: ', e); }
+
+		this.get_card(e);
 	},
 
 	add_point: function(e) {
