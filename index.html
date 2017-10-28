@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
         <title>Activity</title>
         <meta name="description" content="Activity">
-        <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css"/>
         <link rel="stylesheet" type="text/css" href="css/nouislider.css"/>
         <link rel="stylesheet" type="text/css" href="css/style.css"/>
@@ -14,7 +13,7 @@
 
         <div id="main">
             <nav class="head">
-                <div id="cards"></div>
+                <div id="cards" class="hidden"></div>
                 <div id="settings"></div>
                 <div id="logo"></div>
             </nav>
@@ -25,9 +24,6 @@
                 <div id="settings-block"></div>
                 <button type="button" id="start-game">Играть!</button>
             </section>
-            <div class="candy">
-                <button class="btn btn-primary btn-xs" id="candy">Конфета для разработчиков</button>
-            </div>
         </div>
 
         <audio id="beep" class="audio-file beep" controls preload="auto">
@@ -52,6 +48,8 @@
         <script src="js/models/Count.js"></script>
 
         <script src="js/index.js"></script>
+
+        <script id="activity-words" src="db/words.json"></script>
 
     </body>
 </html>

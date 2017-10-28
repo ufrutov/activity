@@ -125,53 +125,53 @@ var Card = Backbone.View.extend({
 	},
 
 	get_card: function(btn) {
-		var me = this,
-			url = window.location.href;
+		if( !activity_words && activity_words.length == 0 ) {
+			console.error('[E] Activity Words data is missing! Check db/words.json file.');
+			return;
+		}
+
+		var index = Math.floor(Math.random() * activity_words.length);
+		var me = this;
+
 		$('#close-play').show();
-		$.ajax({
-			url: url + 'db/index.php',
-			data: {action: 'get_card'},
-			type: 'post',
-			success: function(output) {
-				var data = $.parseJSON(output)[0];
 
-				$('#card-id').html(data.id);
-				$('#word').html(data.word);
-				$('#word').removeClass('encoded');
-				me.word = data.word;
+		var data = activity_words[index];
 
-				if(btn) {
-					App.getTemplate('card-buttons', function(template){
-						$('.card-body > nav').html(template);
-					});
-				}
+		$('#card-id').html(data.id);
+		$('#word').html(data.word);
+		$('#word').removeClass('encoded');
+		me.word = data.word;
 
-				App.getTemplate(me.params, function(template){
-			      	var parameters = _.template(template),
-			      		common = Math.floor(Math.random() * 3) + 1, // 1 to 3
-			      		params = [0, 0, 0];
-			      	params[(Math.floor(Math.random() * 3) + 1) - 1] = 1;
+		if(btn) {
+			App.getTemplate('card-buttons', function(template){
+				$('.card-body > nav').html(template);
+			});
+		}
 
-			      	$('.parameters').html(parameters({
-			      		common: common == 1 ? 1 : 0,
-			      		draw  : params[0],
-						say   : params[1],
-						show  : params[2]
-			      	}));
-			      	switch (params.indexOf(1)) {
-			      		case 0:
-			      			me.current = 'draw';
-			      			break;
-			      		case 1:
-			      			me.current = 'say';
-			      			break;
-			      		case 2:
-			      			me.current = 'show';
-			      			break;
-			      	}
-			    });
-			}
-		});
+		App.getTemplate(me.params, function(template){
+	      	var parameters = _.template(template),
+	      		common = Math.floor(Math.random() * 3) + 1, // 1 to 3
+	      		params = [0, 0, 0];
+	      	params[(Math.floor(Math.random() * 3) + 1) - 1] = 1;
+
+	      	$('.parameters').html(parameters({
+	      		common: common == 1 ? 1 : 0,
+	      		draw  : params[0],
+				say   : params[1],
+				show  : params[2]
+	      	}));
+	      	switch (params.indexOf(1)) {
+	      		case 0:
+	      			me.current = 'draw';
+	      			break;
+	      		case 1:
+	      			me.current = 'say';
+	      			break;
+	      		case 2:
+	      			me.current = 'show';
+	      			break;
+	      	}
+	    });
 
 		return false;
 	},

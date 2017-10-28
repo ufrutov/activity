@@ -9,7 +9,21 @@ button:focus, input:focus, input:active, .btn:focus, .btn:active {
 	outline: none;
 }
 
-/* font-family: 'Ubuntu', sans-serif; */
+@font-face {
+	font-family: 'Ubuntu';
+	font-style: normal;
+	font-weight: 400;
+	src: local('Ubuntu Regular'), local('Ubuntu-Regular'), url(/fonts/Ubuntu-Regular.woff2) format('woff2'), url(/fonts/Ubuntu-Regular.ttf) format('ttf');
+	unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
+
+@font-face {
+	font-family: 'Ubuntu-Bold';
+	font-style: normal;
+	font-weight: 700;
+	src: local('Ubuntu Bold'), local('Ubuntu-Bold'), url(/fonts/Ubuntu-Bold.woff2) format('woff2'), url(/fonts/Ubuntu-Bold.ttf) format('ttf');
+	unicode-range: U+0460-052F, U+20B4, U+2DE0-2DFF, U+A640-A69F;
+}
 
 #main {
 	width: 400px;
@@ -19,6 +33,7 @@ button:focus, input:focus, input:active, .btn:focus, .btn:active {
 	border: 1px solid #ADADAD;
 	padding: 30px;
 	background: url(../img/bg.jpg) no-repeat center center;
+	font-family: 'Ubuntu', sans-serif;
 	position: relative;
 }
 
@@ -561,7 +576,7 @@ article.card-body .word {
 	display: block;
 	margin: 30px auto 0;
 	padding: 10px 0;
-	font-family: 'Ubuntu', sans-serif;
+	font-family: 'Ubuntu-Bold', sans-serif;
 	font-weight: 700;
 	font-size: 22px;
 
