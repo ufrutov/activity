@@ -76,7 +76,8 @@ var Card = Backbone.View.extend({
 		if(i > time) {
 			try {
 				if( App.settings.sound )
-					$('#beep')[0].play();
+					AndroidAudio.playAudio($('#beep source').attr('src'));
+				// $('#beep')[0].play();
 			} catch(e) {
 				console.error('[E] Error on play audio: ', e);
 			}
