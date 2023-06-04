@@ -1,19 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+	<head>
+		<meta charset="utf-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+		/>
+		<title>Activity</title>
+		<meta name="description" content="Activity" />
+		<link
+			href="http://fonts.googleapis.com/css?family=Ubuntu:400,700"
+			rel="stylesheet"
+			type="text/css"
+		/>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+		<link rel="stylesheet" type="text/css" href="css/nouislider.css" />
+		<link rel="stylesheet" type="text/css" href="css/style.css" />
+	</head>
+	<body>
+		<div id="main">
+			<nav class="head">
+				<div id="cards"></div>
+				<div id="settings"></div>
+				<div id="logo"></div>
+			</nav>
+			<section>
+				<div id="count"></div>
+				<div id="card-list"></div>
+				<div id="play"></div>
+				<div id="settings-block"></div>
+				<button type="button" id="start-game">Играть!</button>
+			</section>
+			<div class="candy">
+				<a href="https://github.com/ufrutov/activity" target="_blank" class="btn btn-primary btn-xs" id="candy">Конфета для разработчиков</button>
+			</div>
+		</div>
 
-	<title>Activity</title>
+		<audio id="beep" class="audio-file beep" controls preload="auto">
+			<source src="js/sound/beep.mp3" type="audio/mpeg" />
+			<source src="js/sound/beep.ogg" type="audio/ogg" />
+			<source src="js/sound/beep.wav" type="audio/wav" />
+		</audio>
 
-  <meta name="description" content="Activity">
-  <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="app/css/bootstrap.css"/>
-  <link rel="stylesheet" type="text/css" href="app/css/style.css"/>
-</head>
-<body>
-	<main id="main"></main>
+		<audio id="kaspersky" class="audio-file kaspersky" controls preload="auto">
+			<source src="js/sound/kaspersky.mp3" type="audio/mpeg" />
+		</audio>
 
-	<script type="module" src="app/js/index.js"></script>
-</body>
+		<script src="js/lib/jquery.js"></script>
+		<script src="js/lib/jquery.tmpl.js"></script>
+		<script src="js/lib/underscore.js"></script>
+		<script src="js/lib/backbone.js"></script>
+		<script src="js/lib/nouislider.js"></script>
+		<script src="js/lib/cookie.js"></script>
+		<script src="db/cards.js"></script>
+
+		<script src="activity.js"></script>
+	</body>
 </html>

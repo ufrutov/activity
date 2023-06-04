@@ -1,0 +1,24 @@
+<div class="modal-bckg">
+  <div class="modale">
+    <h3>Карточка № <%= id %></h3>
+    <form>
+      <input type="text" value="<%= word %>" class="form-control word-input" />
+      <div class="label-group">
+        <label class="checkbox-inline">
+          <input type="checkbox" name="draw" <% if (draw != "0") {%>checked<% } %> /> Рисовать
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" name="say" <% if (say != "0") {%>checked<% } %> /> Рассказать
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" name="show" <% if (show != "0") {%>checked<% } %> /> Показать
+        </label>
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-success" id="save" data-id="<%= id %>">Сохранить</button>
+        <button type="button" class="btn btn-danger" id="delete" data-id="<%= id %>">Удалить</button>
+        <button type="button" class="btn btn-default" id="cancel">Отмена</button>
+      </div>
+    </form>
+  </div>
+</div>
